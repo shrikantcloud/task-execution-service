@@ -29,9 +29,9 @@ public class TaskRunner {
 
         // Task 1
         for (int i = MIN_THRESHOLD_COUNT; i <= MAX_THRESHOLD_COUNT; i++) {
-            String taskName = "Work for task " + i;
+            String taskName = "TASK" + i;
             Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
-                String s = ("TaskGroup1 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("TaskGroup1 - Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
@@ -45,9 +45,9 @@ public class TaskRunner {
 
         // Task 2
         for (int j = MIN_THRESHOLD_COUNT + 5; j <= MAX_THRESHOLD_COUNT + 5; j++) {
-            String taskName = "Work for task " + j;
+            String taskName = "TASK" + j;
             Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
-                String s = ("TaskGroup2 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("TaskGroup2 - Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
@@ -59,42 +59,10 @@ public class TaskRunner {
             futureList.add(executor.submitTask(task2));
         }
 
-        // Task 3
-        for (int i = MIN_THRESHOLD_COUNT + 10; i <= MAX_THRESHOLD_COUNT + 10; i++) {
-            String taskName = "Work for task " + i;
-            Task<String> task3 = new Task<>(UUID.randomUUID(), taskGroup3, TaskType.READ, () -> {
-                String s = ("TaskGroup3 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
-                System.out.println(s);
-                try {
-                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                return s;
-            });
-            futureList.add(executor.submitTask(task3));
-        }
-
-        // Task 4
-        for (int i = MIN_THRESHOLD_COUNT + 15; i <= MAX_THRESHOLD_COUNT + 15; i++) {
-            String taskName = "Work for task " + i;
-            Task<String> task4 = new Task<>(UUID.randomUUID(), taskGroup4, TaskType.READ, () -> {
-                String s = ("TaskGroup4 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
-                System.out.println(s);
-                try {
-                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                return s;
-            });
-            futureList.add(executor.submitTask(task4));
-        }
-
         // Print Result
         futureList.forEach(f -> {
             try {
-                System.out.println("future result => " + f.get());
+                System.out.println("Result => " + f.get());
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
