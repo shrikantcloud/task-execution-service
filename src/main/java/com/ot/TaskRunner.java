@@ -14,18 +14,27 @@ import java.util.concurrent.Future;
 
 public class TaskRunner {
 
+    private static final int CONCURRENCY_LEVEL = 3;
+    private static final int THREAD_SLEEP_TIME_IN_MILLIS = 1000;
+    private static final int MIN_THRESHOLD_COUNT = 1;
+    private static final int MAX_THRESHOLD_COUNT = 5;
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        TaskExecutorService executor = new TaskExecutorService(4);
+        TaskExecutorService executor = new TaskExecutorService(CONCURRENCY_LEVEL);
         TaskGroup taskGroup1 = new TaskGroup(UUID.randomUUID());
         TaskGroup taskGroup2 = new TaskGroup(UUID.randomUUID());
+        TaskGroup taskGroup3 = new TaskGroup(UUID.randomUUID());
+        TaskGroup taskGroup4 = new TaskGroup(UUID.randomUUID());
         List<Future<String>> futureList = new ArrayList<>();
-          for(int i=1; i<=5;i++){
-            String taskName = "Work for task "+i;
-            Task<String> task1 = new Task<>(UUID.randomUUID(),taskGroup1, TaskType.READ, () -> {
-                String s = ("TaskGroup1 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by "+ Thread.currentThread().getName());
+
+        // Task 1
+        for (int i = MIN_THRESHOLD_COUNT; i <= MAX_THRESHOLD_COUNT; i++) {
+            String taskName = "Work for task " + i;
+            Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
+                String s = ("TaskGroup1 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -34,13 +43,14 @@ public class TaskRunner {
             futureList.add(executor.submitTask(task1));
         }
 
-        for(int j=6; j<=10;j++){
-            String taskName = "Work for task "+j;
-            Task<String> task2 = new Task<>(UUID.randomUUID(),taskGroup2,TaskType.WRITE, () -> {
-                String s = ("TaskGroup2 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by "+ Thread.currentThread().getName());
+        // Task 2
+        for (int j = MIN_THRESHOLD_COUNT + 5; j <= MAX_THRESHOLD_COUNT + 5; j++) {
+            String taskName = "Work for task " + j;
+            Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
+                String s = ("TaskGroup2 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -49,9 +59,42 @@ public class TaskRunner {
             futureList.add(executor.submitTask(task2));
         }
 
+        // Task 3
+        for (int i = MIN_THRESHOLD_COUNT + 10; i <= MAX_THRESHOLD_COUNT + 10; i++) {
+            String taskName = "Work for task " + i;
+            Task<String> task3 = new Task<>(UUID.randomUUID(), taskGroup3, TaskType.READ, () -> {
+                String s = ("TaskGroup3 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                System.out.println(s);
+                try {
+                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                return s;
+            });
+            futureList.add(executor.submitTask(task3));
+        }
+
+        // Task 4
+        for (int i = MIN_THRESHOLD_COUNT + 15; i <= MAX_THRESHOLD_COUNT + 15; i++) {
+            String taskName = "Work for task " + i;
+            Task<String> task4 = new Task<>(UUID.randomUUID(), taskGroup4, TaskType.READ, () -> {
+                String s = ("TaskGroup4 => Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                System.out.println(s);
+                try {
+                    Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                return s;
+            });
+            futureList.add(executor.submitTask(task4));
+        }
+
+        // Print Result
         futureList.forEach(f -> {
             try {
-                System.out.println(Thread.currentThread().getName()+" # future => "+f.get());
+                System.out.println("future result => " + f.get());
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }

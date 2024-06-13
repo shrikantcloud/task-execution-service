@@ -1,9 +1,9 @@
 package com.ot.service;
 
-import com.ot.task.Task;
 import com.ot.executor.TaskExecutor;
+import com.ot.task.Task;
 import com.ot.task.TaskGroup;
-import com.ot.task.TaskWrapper;
+import com.ot.task.TaskAdaptor;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 public class TaskExecutorService implements TaskExecutor {
 
     private final ExecutorService executorService;
-    private final BlockingQueue<TaskWrapper> taskQueue;
+    private final BlockingQueue<TaskAdaptor> taskQueue;
     private final Map<TaskGroup, Semaphore> taskGroupLocks;
 
     public TaskExecutorService(int maxConcurrency) {
@@ -25,14 +25,14 @@ public class TaskExecutorService implements TaskExecutor {
         new Thread(() -> {
             try {
                 while (!executorService.isShutdown()) {
-                    TaskWrapper taskWrapper = taskQueue.take();
-                    TaskGroup taskGroup = taskWrapper.getTask().taskGroup();
+                    TaskAdaptor taskAdaptor = taskQueue.take();
+                    TaskGroup taskGroup = taskAdaptor.getTask().taskGroup();
                     taskGroupLocks.put(taskGroup, new Semaphore(1));
                     Semaphore semaphore = taskGroupLocks.get(taskGroup);
                     semaphore.acquire();
                     executorService.submit(() -> {
                         try {
-                            taskWrapper.run();
+                            taskAdaptor.run();
                         } finally {
                             semaphore.release();
                         }
@@ -46,10 +46,10 @@ public class TaskExecutorService implements TaskExecutor {
     }
 
     @Override
-    public <T>Future<T> submitTask(Task<T> task) {
-        TaskWrapper taskWrapper = new TaskWrapper(task);
-        taskQueue.offer(taskWrapper);
-        return (Future<T>) taskWrapper.getFuture();
+    public <T> Future<T> submitTask(Task<T> task) {
+        TaskAdaptor taskAdaptor = new TaskAdaptor(task);
+        taskQueue.offer(taskAdaptor);
+        return (Future<T>) taskAdaptor.getFuture();
     }
 
     public void shutDown() throws InterruptedException {

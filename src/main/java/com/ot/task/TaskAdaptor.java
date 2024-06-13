@@ -4,12 +4,12 @@ package com.ot.task;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
-public class TaskWrapper implements Runnable {
+public class TaskAdaptor implements Runnable {
 
     private final Task task;
     private final FutureTask<?> futureTask;
 
-    public TaskWrapper(Task task) {
+    public TaskAdaptor(Task task) {
         this.task = task;
         this.futureTask = new FutureTask<>(task.taskAction());
     }
