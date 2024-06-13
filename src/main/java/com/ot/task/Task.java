@@ -1,8 +1,9 @@
 package com.ot.task;
 
+import com.ot.executor.TaskExecutor;
+
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
 
 /**
  * Representation of computation to be performed by the {@link TaskExecutor}.
