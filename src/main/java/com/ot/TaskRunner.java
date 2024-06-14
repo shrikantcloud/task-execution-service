@@ -30,7 +30,7 @@ public class TaskRunner {
         TaskGroup taskGroup2 = new TaskGroup(UUID.randomUUID());
         List<Future<String>> futureResultList = new ArrayList<>();
 
-        // Task 1
+        // TaskGroup 1
         for (int i = MIN_THRESHOLD_COUNT; i <= MAX_THRESHOLD_COUNT; i++) {
             String taskName = "TASK" + i;
             Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
@@ -46,7 +46,7 @@ public class TaskRunner {
             futureResultList.add(taskExecutorService.submitTask(task1));
         }
 
-        // Task 2
+        // TaskGroup 2
         for (int j = MIN_THRESHOLD_COUNT + 5; j <= MAX_THRESHOLD_COUNT + 5; j++) {
             String taskName = "TASK" + j;
             Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
@@ -71,6 +71,7 @@ public class TaskRunner {
             }
         });
 
+        // Run Stats
         LocalTime endTime = LocalTime.now();
         System.out.println("Task Runner Stopping ... ");
         System.out.println("*********************************************************************");
