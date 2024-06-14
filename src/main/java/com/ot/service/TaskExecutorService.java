@@ -10,6 +10,7 @@ import java.util.concurrent.*;
 
 public class TaskExecutorService implements TaskExecutor {
 
+    private static final int SEMAPHORE_MUTEX_LOCK = 1;
     private final ExecutorService executorService;
     private final BlockingQueue<TaskAdaptor> taskQueue;
     private final Map<TaskGroup, Semaphore> taskGroupLocks;
@@ -18,16 +19,16 @@ public class TaskExecutorService implements TaskExecutor {
         this.executorService = Executors.newFixedThreadPool(maxConcurrency);
         this.taskQueue = new LinkedBlockingQueue<>();
         this.taskGroupLocks = new ConcurrentHashMap<>();
-        startTaskDispatcher();
+        dispatchTask();
     }
 
-    private void startTaskDispatcher() {
+    private void dispatchTask() {
         new Thread(() -> {
             try {
                 while (!executorService.isShutdown()) {
                     TaskAdaptor taskAdaptor = taskQueue.take();
                     TaskGroup taskGroup = taskAdaptor.getTask().taskGroup();
-                    taskGroupLocks.put(taskGroup, new Semaphore(1));
+                    taskGroupLocks.put(taskGroup, new Semaphore(SEMAPHORE_MUTEX_LOCK));
                     Semaphore semaphore = taskGroupLocks.get(taskGroup);
                     semaphore.acquire();
                     executorService.submit(() -> {
@@ -41,7 +42,7 @@ public class TaskExecutorService implements TaskExecutor {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        }, "ThreadA").start();
+        }).start();
 
     }
 

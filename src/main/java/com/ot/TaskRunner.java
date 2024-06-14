@@ -16,8 +16,8 @@ import java.util.concurrent.Future;
 
 public class TaskRunner {
 
-    private static final int CONCURRENCY_LEVEL = 5;
-    private static final int THREAD_SLEEP_TIME_IN_MILLIS = 5000;
+    private static final int CONCURRENCY_LEVEL = 4;
+    private static final int THREAD_SLEEP_TIME_IN_MILLIS = 1000;
     private static final int MIN_THRESHOLD_COUNT = 1;
     private static final int MAX_THRESHOLD_COUNT = 5;
 
