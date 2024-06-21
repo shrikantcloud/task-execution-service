@@ -23,13 +23,17 @@ public class TaskExecutorService implements TaskExecutor {
     }
 
     private void dispatchTask() {
+
         new Thread(() -> {
             try {
                 while (!executorService.isShutdown()) {
+                    final Semaphore semaphore;
                     TaskAdaptor taskAdaptor = taskQueue.take();
                     TaskGroup taskGroup = taskAdaptor.getTask().taskGroup();
-                    taskGroupLocks.put(taskGroup, new Semaphore(SEMAPHORE_INITIAL_PERMIT_COUNT));
-                    Semaphore semaphore = taskGroupLocks.get(taskGroup);
+                    if (!taskGroupLocks.containsKey(taskGroup)) {
+                        taskGroupLocks.put(taskGroup, new Semaphore(SEMAPHORE_INITIAL_PERMIT_COUNT, true));
+                    }
+                    semaphore = taskGroupLocks.get(taskGroup);
                     semaphore.acquire();
                     executorService.submit(() -> {
                         try {
