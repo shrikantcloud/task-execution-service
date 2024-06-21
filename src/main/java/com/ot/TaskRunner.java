@@ -32,7 +32,7 @@ public class TaskRunner {
         for (int i = 1; i <= 5; i++) {
             String taskName = "TASK" + i;
             Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
-                String s = ("Submit => TaskGroup1 - Task [TG1_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("Submit => Task [TG1_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
@@ -48,7 +48,7 @@ public class TaskRunner {
         for (int j = 1; j <= 5; j++) {
             String taskName = "TASK" + j;
             Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
-                String s = ("Submit => TaskGroup2 - Task [TG2_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("Submit => Task [TG2_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
