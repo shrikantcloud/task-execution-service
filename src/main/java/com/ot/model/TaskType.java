@@ -1,4 +1,4 @@
-package com.ot.task;
+package com.ot.model;
 
 /**
  * Enumeration of task types.

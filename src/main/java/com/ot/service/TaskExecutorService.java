@@ -1,9 +1,9 @@
 package com.ot.service;
 
 import com.ot.executor.TaskExecutor;
-import com.ot.task.Task;
-import com.ot.task.TaskAdaptor;
-import com.ot.task.TaskGroup;
+import com.ot.model.Task;
+import com.ot.model.TaskAdaptor;
+import com.ot.model.TaskGroup;
 
 import java.util.Map;
 import java.util.concurrent.*;

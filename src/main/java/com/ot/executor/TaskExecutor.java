@@ -1,6 +1,6 @@
 package com.ot.executor;
 
-import com.ot.task.Task;
+import com.ot.model.Task;
 
 import java.util.concurrent.Future;
 

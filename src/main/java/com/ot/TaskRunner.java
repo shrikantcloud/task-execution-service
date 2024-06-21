@@ -1,9 +1,9 @@
 package com.ot;
 
 import com.ot.service.TaskExecutorService;
-import com.ot.task.Task;
-import com.ot.task.TaskGroup;
-import com.ot.task.TaskType;
+import com.ot.model.Task;
+import com.ot.model.TaskGroup;
+import com.ot.model.TaskType;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

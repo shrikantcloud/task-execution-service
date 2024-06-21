@@ -1,4 +1,4 @@
-package com.ot.task;
+package com.ot.model;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

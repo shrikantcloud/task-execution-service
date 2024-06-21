@@ -1,4 +1,4 @@
-package com.ot.task;
+package com.ot.model;
 
 import java.util.UUID;
 
