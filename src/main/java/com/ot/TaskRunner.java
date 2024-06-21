@@ -34,7 +34,7 @@ public class TaskRunner {
         for (int i = MIN_THRESHOLD_COUNT; i <= MAX_THRESHOLD_COUNT; i++) {
             String taskName = "TASK" + i;
             Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
-                String s = ("Submit => TaskGroup1 - Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("Submit => TaskGroup1 - Task [TG1_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
@@ -50,7 +50,7 @@ public class TaskRunner {
         for (int j = MIN_THRESHOLD_COUNT + 5; j <= MAX_THRESHOLD_COUNT + 5; j++) {
             String taskName = "TASK" + j;
             Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
-                String s = ("Submit => TaskGroup2 - Task [" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
+                String s = ("Submit => TaskGroup2 - Task [TG2_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
                 System.out.println(s);
                 try {
                     Thread.sleep(THREAD_SLEEP_TIME_IN_MILLIS);
@@ -71,7 +71,7 @@ public class TaskRunner {
             }
         });
 
-        // Run Stats
+        // Log Stats
         LocalTime endTime = LocalTime.now();
         System.out.println("Task Runner Stopping ... ");
         System.out.println("*********************************************************************");
