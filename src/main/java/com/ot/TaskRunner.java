@@ -18,8 +18,6 @@ public class TaskRunner {
 
     private static final int CONCURRENCY_LEVEL = 4;
     private static final int THREAD_SLEEP_TIME_IN_MILLIS = 2000;
-    private static final int MIN_THRESHOLD_COUNT = 1;
-    private static final int MAX_THRESHOLD_COUNT = 5;
 
     public static void main(String[] args) throws InterruptedException {
         LocalTime startTime = LocalTime.now();
@@ -31,7 +29,7 @@ public class TaskRunner {
         List<Future<String>> futureResultList = new ArrayList<>();
 
         // TaskGroup 1
-        for (int i = MIN_THRESHOLD_COUNT; i <= MAX_THRESHOLD_COUNT; i++) {
+        for (int i = 1; i <= 5; i++) {
             String taskName = "TASK" + i;
             Task<String> task1 = new Task<>(UUID.randomUUID(), taskGroup1, TaskType.READ, () -> {
                 String s = ("Submit => TaskGroup1 - Task [TG1_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
@@ -47,7 +45,7 @@ public class TaskRunner {
         }
 
         // TaskGroup 2
-        for (int j = MIN_THRESHOLD_COUNT + 5; j <= MAX_THRESHOLD_COUNT + 5; j++) {
+        for (int j = 1; j <= 5; j++) {
             String taskName = "TASK" + j;
             Task<String> task2 = new Task<>(UUID.randomUUID(), taskGroup2, TaskType.WRITE, () -> {
                 String s = ("Submit => TaskGroup2 - Task [TG2_" + taskName + "] executed on : " + LocalDateTime.now().toString() + " by " + Thread.currentThread().getName());
