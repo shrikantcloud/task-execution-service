@@ -65,7 +65,7 @@ public class TaskRunner {
         // Print Result
         futureResultList.forEach(f -> {
             try {
-                System.out.println("Result => " + f.get().replace("Submit => ", ""));
+                System.out.println(f.get().replace("Submit => ", "Result => "));
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
