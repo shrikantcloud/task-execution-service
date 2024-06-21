@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 public class TaskExecutorService implements TaskExecutor {
 
-    private static final int SEMAPHORE_MUTEX_LOCK = 1;
+    private static final int SEMAPHORE_INITIAL_PERMIT_COUNT = 1;
     private final ExecutorService executorService;
     private final BlockingQueue<TaskAdaptor> taskQueue;
     private final Map<TaskGroup, Semaphore> taskGroupLocks;
@@ -28,7 +28,7 @@ public class TaskExecutorService implements TaskExecutor {
                 while (!executorService.isShutdown()) {
                     TaskAdaptor taskAdaptor = taskQueue.take();
                     TaskGroup taskGroup = taskAdaptor.getTask().taskGroup();
-                    taskGroupLocks.put(taskGroup, new Semaphore(SEMAPHORE_MUTEX_LOCK));
+                    taskGroupLocks.put(taskGroup, new Semaphore(SEMAPHORE_INITIAL_PERMIT_COUNT));
                     Semaphore semaphore = taskGroupLocks.get(taskGroup);
                     semaphore.acquire();
                     executorService.submit(() -> {
